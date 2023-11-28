@@ -25,25 +25,38 @@ def parcing(url: str):
     select0.select_by_value('9479')
     select.select_by_value('90')
     table = driver.find_element(By.XPATH, '//*[@id="content"]/div/div[3]/div/div[2]/div/div/div[2]')
-    print(type(table), type(table.text))
-    ts = table.text.split(' ')
-    print(ts)
-    
+    ts = table.text.split('\n')
     with open('test_parcing2.txt', 'w', encoding='utf-8') as file0:
         file0.write('')
     for i in table.text:
         with open('test_parcing2.txt', 'a', encoding='utf-8') as file:
             file.write(i)
-    time.sleep(66)
+    time.sleep(3)
 
 def read_file():
     "чтение временного файла"
     list = []
     with open('test_parcing2.txt', 'r', encoding='utf-8') as file:
         for i in file:
-            list.append(file.readline())
-    print('list = ', list)
+            list.append(i[:-2])
+    # print('list = ', list)
+    # print(list[5], list[6])
+    # print(list[11], list[12])
+    # print(list[17], list[18])
+    print('самые низкие цены: ', list[6], list[12], list[18])
+    res = int(list[6].split('.')[0])
+    return res
+
+def poll():
+    while True:
+        parcing('https://funpay.com/chips/193/')
+        res = read_file()
+        print(res)
+        if res < 100:
+            return res
+        time.sleep(30)
+
 
 url = 'https://funpay.com/chips/193/'
-parcing(url)
-# read_file()
+# parcing(url)
+print(read_file())
